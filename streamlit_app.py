@@ -52,10 +52,3 @@ if botao_realizar_avaliacao:
       resultado_avaliacao = "crédito reprovado"
       
     st.write(resultado_avaliacao)
-    
-    
-# 01.Execute o site a partir de seu arquivo `site_analise_de_credito.py`.
-!streamlit run site_analise_de_credito.py &>/dev/null&
-
-# 02.Crie o link para poder acessar o site criado.
-!npx localtunnel --port 8501
