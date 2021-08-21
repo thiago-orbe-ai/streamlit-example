@@ -1,6 +1,3 @@
-# INSTALAR STREAMLIT
-!pip install streamlit
-
 # Criar o arquivo do site
 %%writefile site_analise_de_credito.py 
 
