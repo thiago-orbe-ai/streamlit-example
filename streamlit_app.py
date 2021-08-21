@@ -1,6 +1,3 @@
-# Criar o arquivo do site
-%%writefile site_analise_de_credito.py 
-
 # IMPORTAR AS BIBLIOTECAS NECESSÁRIAS E O ALGORIMO K-NN
 import streamlit as st
 import pandas as pd
