@@ -1,38 +1,67 @@
-from collections import namedtuple
-import altair as alt
-import math
-import pandas as pd
+# INSTALAR STREAMLIT
+!pip install streamlit
+
+# Criar o arquivo do site
+%%writefile site_analise_de_credito.py 
+
+# IMPORTAR AS BIBLIOTECAS NECESSÁRIAS E O ALGORIMO K-NN
 import streamlit as st
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
 
-"""
-# Welcome to Streamlit!
+# CRIAR FUNÇÕES NECESSÁRIAS PARA CARREGAR DADOS E TREINAR MODELO.
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:
+# Função para carregar o dataset
+@st.cache
+def carregar_dados():
+  return pd.read_csv('/content/dados_de_credito_limpo.csv')
 
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+# Função para treinar o modelo
+def treinar_modelo():
+  df = carregar_dados()
+  df=(df-df.min())/(df.max()-df.min())
+  X_atributos_preditores = df.iloc[:,1:4].values
+  y_atributo_alvo = df.iloc[:,4].values
+  modelo_knn_classificacao = KNeighborsClassifier(n_neighbors=5,metric='minkowski', p=2)
+  modelo_knn_classificacao.fit(X_atributos_preditores,y_atributo_alvo)
+  return modelo_knn_classificacao
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+# MODELO DE CLASSIFICAÇÃO
+# treinando o modelo
+modelo = treinar_modelo()
+  
+# SITE
+# Título do site
+st.title("Site para classificar empréstimo.")
 
+# Subtítulo 
+st.subheader("Insira seus dados.")
 
-with st.echo(code_location='below'):
-    total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-    num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
+# Recebendo os dados do usuário.
+salario = st.number_input("Salário", value=0)
+idade = st.number_input("Idade", value=0)
+valor_emprestimo = st.number_input("Valor empréstimo", value=0)
 
-    Point = namedtuple('Point', 'x y')
-    data = []
+# Botão para realizar a avaliação de crédito.
+botao_realizar_avaliacao = st.button("Realizar avaliação")
 
-    points_per_turn = total_points / num_turns
+# SE o botão seja acionado.
+# 01.Coletar todos os dados que o usuário informou.
+# 02.Usar os dados para predizer o resultado. Crédito aprovado ou reprovado.
+# 03.Mostrar o resultado da avaliação.
+if botao_realizar_avaliacao:
+    resultado = modelo.predict([[salario,idade,valor_emprestimo]])
+    st.subheader("Resultado: ")
+    if resultado == 0:
+      resultado_avaliacao = "crédito aprovado"
+    else:
+      resultado_avaliacao = "crédito reprovado"
+      
+    st.write(resultado_avaliacao)
+    
+    
+# 01.Execute o site a partir de seu arquivo `site_analise_de_credito.py`.
+!streamlit run site_analise_de_credito.py &>/dev/null&
 
-    for curr_point_num in range(total_points):
-        curr_turn, i = divmod(curr_point_num, points_per_turn)
-        angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-        radius = curr_point_num / total_points
-        x = radius * math.cos(angle)
-        y = radius * math.sin(angle)
-        data.append(Point(x, y))
-
-    st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-        .mark_circle(color='#0068c9', opacity=0.5)
-        .encode(x='x:Q', y='y:Q'))
+# 02.Crie o link para poder acessar o site criado.
+!npx localtunnel --port 8501
