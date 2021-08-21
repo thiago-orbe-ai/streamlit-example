@@ -6,9 +6,12 @@ from sklearn.neighbors import KNeighborsClassifier
 # CRIAR FUNÇÕES NECESSÁRIAS PARA CARREGAR DADOS E TREINAR MODELO.
 
 # Função para carregar o dataset
-@st.cache
 def carregar_dados():
-  return pd.read_csv('/content/dados_de_credito_limpo.csv')
+  uploaded_file = st.file_uploader("Choose a file")
+  if uploaded_file is not None:
+    dataframe = pd.read_csv(uploaded_file)
+  return dataframe
+  
 
 # Função para treinar o modelo
 def treinar_modelo():
