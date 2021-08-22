@@ -1,7 +1,10 @@
 # IMPORTAR AS BIBLIOTECAS NECESSÁRIAS E O ALGORIMO K-NN
 import streamlit as st
 import pandas as pd
+import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import StandardScaler
+
 
 # CRIAR FUNÇÕES NECESSÁRIAS PARA CARREGAR DADOS E TREINAR MODELO.
 
@@ -19,8 +22,9 @@ def treinar_modelo():
   X_atributos_preditores = df.iloc[:,1:4].values
   y_atributo_alvo = df.iloc[:,4].values
   # Normalização Min-Max para a os preditores
-  scaler = sklearn.preprocessing.MinMaxScaler().fit(X_atributos_preditores)
-  X_atributos_preditores_scaled = scaler.transform(X_train)
+  sc = StandardScaler()
+  sc.fit(X_atributos_preditores)
+  X_atributos_preditores_scaled = sc.transform(X)
   modelo_knn_classificacao = KNeighborsClassifier(n_neighbors=5,metric='minkowski', p=2)
   modelo_knn_classificacao.fit(X_atributos_preditores_scaled,y_atributo_alvo)
   return modelo_knn_classificacao
@@ -41,8 +45,8 @@ salario = st.number_input("Salário", value=0)
 idade = st.number_input("Idade", value=0)
 valor_emprestimo = st.number_input("Valor empréstimo", value=0)
 # Aplicar a normalização Min-Max dos preditores nos novos dados
-new_data = [salario, idade, valor_emprestimo]
-new_data_scaled = scaler.transform(new_data)
+new_data = np.array(salario, idade, valor_emprestimo)
+new_data_scaled = sc.transform(np.array(new_data))
 
 
 # Botão para realizar a avaliação de crédito.
