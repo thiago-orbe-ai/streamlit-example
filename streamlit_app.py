@@ -32,10 +32,6 @@ uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
   df = pd.read_csv(uploaded_file)
 
-# MODELO DE CLASSIFICAÇÃO
-# treinando o modelo
-modelo = treinar_modelo(df)
-
 # Recebendo os dados do usuário.
 salario = st.number_input("Salário", value=0)
 idade = st.number_input("Idade", value=0)
@@ -54,11 +50,14 @@ botao_realizar_avaliacao = st.button("Realizar avaliação")
 # 02.Usar os dados para predizer o resultado. Crédito aprovado ou reprovado.
 # 03.Mostrar o resultado da avaliação.
 if botao_realizar_avaliacao:
-    resultado = modelo.predict([new_data_scaled])
-    st.subheader("Resultado: ")
-    if resultado == 0:
-      resultado_avaliacao = "crédito aprovado"
-    else:
-      resultado_avaliacao = "crédito reprovado"
-      
-    st.write(resultado_avaliacao)
+    # MODELO DE CLASSIFICAÇÃO
+# treinando o modelo
+  modelo = treinar_modelo(df)
+  resultado = modelo.predict([new_data_scaled])
+  st.subheader("Resultado: ")
+  if resultado == 0:
+    resultado_avaliacao = "crédito aprovado"
+  else:
+    resultado_avaliacao = "crédito reprovado"
+    
+  st.write(resultado_avaliacao)
