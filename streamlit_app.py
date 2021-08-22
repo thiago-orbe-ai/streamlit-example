@@ -28,8 +28,8 @@ st.subheader("Insira seus dados.")
 
 # Recebendo os dados do usuário.
 uploaded_file = st.file_uploader("Choose a file")
-  if uploaded_file is not None:
-    dataframe = pd.read_csv(uploaded_file)
+if uploaded_file is not None:
+  dataframe = pd.read_csv(uploaded_file)
 salario = st.number_input("Salário", value=0)
 idade = st.number_input("Idade", value=0)
 valor_emprestimo = st.number_input("Valor empréstimo", value=0)
