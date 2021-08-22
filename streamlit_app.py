@@ -35,7 +35,8 @@ salario = st.number_input("Salário", value=0)
 idade = st.number_input("Idade", value=0)
 valor_emprestimo = st.number_input("Valor empréstimo", value=0)
 # Aplicar a normalização Min-Max dos preditores nos novos dados
-new_data = np.array(salario, idade, valor_emprestimo)
+new_data=[]
+new_data = np.array([salario, idade, valor_emprestimo])
 new_data_scaled = sc.transform(new_data)
 
 
@@ -51,7 +52,7 @@ modelo = treinar_modelo(dataframe)
 # 02.Usar os dados para predizer o resultado. Crédito aprovado ou reprovado.
 # 03.Mostrar o resultado da avaliação.
 if botao_realizar_avaliacao:
-    resultado = modelo.predict(new_data_scaled)
+    resultado = modelo.predict([new_data_scaled])
     st.subheader("Resultado: ")
     if resultado == 0:
       resultado_avaliacao = "crédito aprovado"
