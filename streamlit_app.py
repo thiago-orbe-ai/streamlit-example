@@ -40,7 +40,6 @@ valor_emprestimo = st.number_input("Valor empréstimo", value=0)
 # Aplicar a normalização Min-Max dos preditores nos novos dados
 new_data=[]
 new_data = np.array([salario, idade, valor_emprestimo])
-new_data_scaled = sc.transform(new_data)
 
 # Botão para realizar a avaliação de crédito.
 botao_realizar_avaliacao = st.button("Realizar avaliação")
@@ -53,6 +52,7 @@ if botao_realizar_avaliacao:
     # MODELO DE CLASSIFICAÇÃO
 # treinando o modelo
   modelo = treinar_modelo(df)
+  new_data_scaled = sc.transform(new_data)
   resultado = modelo.predict([new_data_scaled])
   st.subheader("Resultado: ")
   if resultado == 0:
