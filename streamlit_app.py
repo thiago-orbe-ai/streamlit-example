@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import MinMaxScaler
 
 # CRIAR FUNÇÕES NECESSÁRIAS PARA CARREGAR DADOS E TREINAR MODELO.
 
@@ -16,11 +17,13 @@ def carregar_dados():
 # Função para treinar o modelo
 def treinar_modelo():
   df = carregar_dados()
-  df=(df-df.min())/(df.max()-df.min())
   X_atributos_preditores = df.iloc[:,1:4].values
   y_atributo_alvo = df.iloc[:,4].values
+  # Normalização Min-Max para a os preditores
+  scaler = preprocessing.MinMaxScaler().fit(X_atributos_preditores)
+  X_atributos_preditores_scaled = scaler.transform(X_train)
   modelo_knn_classificacao = KNeighborsClassifier(n_neighbors=5,metric='minkowski', p=2)
-  modelo_knn_classificacao.fit(X_atributos_preditores,y_atributo_alvo)
+  modelo_knn_classificacao.fit(X_atributos_preditores_scaled,y_atributo_alvo)
   return modelo_knn_classificacao
 
 # MODELO DE CLASSIFICAÇÃO
@@ -38,6 +41,10 @@ st.subheader("Insira seus dados.")
 salario = st.number_input("Salário", value=0)
 idade = st.number_input("Idade", value=0)
 valor_emprestimo = st.number_input("Valor empréstimo", value=0)
+# Aplicar a normalização Min-Max dos preditores nos novos dados
+new_data = [salario, idade, valor_emprestimo]
+new_data_scaled = scaler.transform(new_data)
+
 
 # Botão para realizar a avaliação de crédito.
 botao_realizar_avaliacao = st.button("Realizar avaliação")
@@ -47,7 +54,7 @@ botao_realizar_avaliacao = st.button("Realizar avaliação")
 # 02.Usar os dados para predizer o resultado. Crédito aprovado ou reprovado.
 # 03.Mostrar o resultado da avaliação.
 if botao_realizar_avaliacao:
-    resultado = modelo.predict([[salario,idade,valor_emprestimo]])
+    resultado = modelo.predict([new_data_scaled])
     st.subheader("Resultado: ")
     if resultado == 0:
       resultado_avaliacao = "crédito aprovado"
