@@ -5,20 +5,10 @@ import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
 
-
 # CRIAR FUNÇÕES NECESSÁRIAS PARA CARREGAR DADOS E TREINAR MODELO.
 
-# Função para carregar o dataset
-def carregar_dados():
-  uploaded_file = st.file_uploader("Choose a file")
-  if uploaded_file is not None:
-    dataframe = pd.read_csv(uploaded_file)
-  return dataframe
-  
-
 # Função para treinar o modelo
-def treinar_modelo():
-  df = carregar_dados()
+def treinar_modelo(df):
   X_atributos_preditores = df.iloc[:,1:4].values
   y_atributo_alvo = df.iloc[:,4].values
   # Normalização Min-Max para a os preditores
@@ -29,10 +19,6 @@ def treinar_modelo():
   modelo_knn_classificacao.fit(X_atributos_preditores_scaled,y_atributo_alvo)
   return modelo_knn_classificacao
 
-# MODELO DE CLASSIFICAÇÃO
-# treinando o modelo
-modelo = treinar_modelo()
-  
 # SITE
 # Título do site
 st.title("Site para classificar empréstimo.")
@@ -41,6 +27,9 @@ st.title("Site para classificar empréstimo.")
 st.subheader("Insira seus dados.")
 
 # Recebendo os dados do usuário.
+uploaded_file = st.file_uploader("Choose a file")
+  if uploaded_file is not None:
+    dataframe = pd.read_csv(uploaded_file)
 salario = st.number_input("Salário", value=0)
 idade = st.number_input("Idade", value=0)
 valor_emprestimo = st.number_input("Valor empréstimo", value=0)
@@ -51,6 +40,10 @@ new_data_scaled = sc.transform(np.array(new_data))
 
 # Botão para realizar a avaliação de crédito.
 botao_realizar_avaliacao = st.button("Realizar avaliação")
+
+# MODELO DE CLASSIFICAÇÃO
+# treinando o modelo
+modelo = treinar_modelo(dataframe)
 
 # SE o botão seja acionado.
 # 01.Coletar todos os dados que o usuário informou.
