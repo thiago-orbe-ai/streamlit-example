@@ -51,7 +51,7 @@ if botao_realizar_avaliacao:
     # MODELO DE CLASSIFICAÇÃO
 # treinando o modelo
   modelo = treinar_modelo(df)
-  new_data_scaled = sc.transform(new_data)
+  new_data_scaled = sc.transform([new_data])
   resultado = modelo.predict(new_data_scaled)
   st.subheader("Resultado: ")
   if resultado == 0:
