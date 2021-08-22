@@ -38,7 +38,7 @@ idade = st.number_input("Idade", value=0)
 valor_emprestimo = st.number_input("Valor empréstimo", value=0)
 
 # Aplicar a normalização Min-Max dos preditores nos novos dados
-new_data = np.array(salario, idade, valor_emprestimo)
+new_data = [salario, idade, valor_emprestimo]
 
 # Botão para realizar a avaliação de crédito.
 botao_realizar_avaliacao = st.button("Realizar avaliação")
