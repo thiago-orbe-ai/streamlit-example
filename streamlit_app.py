@@ -2,7 +2,6 @@
 import streamlit as st
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import MinMaxScaler
 
 # CRIAR FUNÇÕES NECESSÁRIAS PARA CARREGAR DADOS E TREINAR MODELO.
 
@@ -20,7 +19,7 @@ def treinar_modelo():
   X_atributos_preditores = df.iloc[:,1:4].values
   y_atributo_alvo = df.iloc[:,4].values
   # Normalização Min-Max para a os preditores
-  scaler = preprocessing.MinMaxScaler().fit(X_atributos_preditores)
+  scaler = sklearn.preprocessing.MinMaxScaler().fit(X_atributos_preditores)
   X_atributos_preditores_scaled = scaler.transform(X_train)
   modelo_knn_classificacao = KNeighborsClassifier(n_neighbors=5,metric='minkowski', p=2)
   modelo_knn_classificacao.fit(X_atributos_preditores_scaled,y_atributo_alvo)
