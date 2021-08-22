@@ -30,11 +30,11 @@ st.subheader("Insira seus dados.")
 # Recebendo o arquivo
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
-  dataframe = pd.read_csv(uploaded_file)
+  df = pd.read_csv(uploaded_file)
 
 # MODELO DE CLASSIFICAÇÃO
 # treinando o modelo
-modelo = treinar_modelo(dataframe)
+modelo = treinar_modelo(df)
 
 # Recebendo os dados do usuário.
 salario = st.number_input("Salário", value=0)
