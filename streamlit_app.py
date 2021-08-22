@@ -3,9 +3,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import StandardScaler as sc
+from sklearn.preprocessing import StandardScaler
 
-#sc = StandardScaler()
+sc = StandardScaler()
 
 # CRIAR FUNÇÕES NECESSÁRIAS PARA CARREGAR DADOS E TREINAR MODELO.
 
