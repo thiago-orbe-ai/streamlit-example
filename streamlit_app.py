@@ -15,7 +15,7 @@ def treinar_modelo(df):
   y_atributo_alvo = df.iloc[:,4].values
   # Normalização Min-Max para a os preditores
   sc.fit(X_atributos_preditores)
-  X_atributos_preditores_scaled = sc.transform(X)
+  X_atributos_preditores_scaled = sc.transform(X_atributos_preditores)
   modelo_knn_classificacao = KNeighborsClassifier(n_neighbors=5,metric='minkowski', p=2)
   modelo_knn_classificacao.fit(X_atributos_preditores_scaled,y_atributo_alvo)
   return modelo_knn_classificacao
