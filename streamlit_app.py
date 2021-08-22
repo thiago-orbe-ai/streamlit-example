@@ -3,9 +3,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 
-sc = StandardScaler()
+sc = MinMaxScaler()
 
 # CRIAR FUNÇÕES NECESSÁRIAS PARA CARREGAR DADOS E TREINAR MODELO.
 
@@ -27,25 +27,27 @@ st.title("Site para classificar empréstimo.")
 # Subtítulo 
 st.subheader("Insira seus dados.")
 
-# Recebendo os dados do usuário.
+# Recebendo o arquivo
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
   dataframe = pd.read_csv(uploaded_file)
+
+# MODELO DE CLASSIFICAÇÃO
+# treinando o modelo
+modelo = treinar_modelo(dataframe)
+
+# Recebendo os dados do usuário.
 salario = st.number_input("Salário", value=0)
 idade = st.number_input("Idade", value=0)
 valor_emprestimo = st.number_input("Valor empréstimo", value=0)
+
 # Aplicar a normalização Min-Max dos preditores nos novos dados
 new_data=[]
 new_data = np.array([salario, idade, valor_emprestimo])
 new_data_scaled = sc.transform(new_data)
 
-
 # Botão para realizar a avaliação de crédito.
 botao_realizar_avaliacao = st.button("Realizar avaliação")
-
-# MODELO DE CLASSIFICAÇÃO
-# treinando o modelo
-modelo = treinar_modelo(dataframe)
 
 # SE o botão seja acionado.
 # 01.Coletar todos os dados que o usuário informou.
